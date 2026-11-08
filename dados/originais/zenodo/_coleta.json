@@ -1,0 +1,29 @@
+{
+  "fonte": "UFRGS/IPH - Banco de dados das cheias na Região Hidrográfica do Lago Guaíba (Zenodo)",
+  "url": "https://zenodo.org/records/13227745",
+  "doi": "10.5281/zenodo.13227745",
+  "versao": "v.1.2",
+  "licenca": "CC-BY-4.0",
+  "arquivos": {
+    "cheias_rhguaiba_2024_db_v12_glossario.csv": {
+      "url": "https://zenodo.org/api/records/13227745/files/cheias_rhguaiba_2024_db_v12_glossario.csv/content",
+      "tamanho_bytes": 12028,
+      "checksum": "md5:baf27ef05534bae320d50c9a8aa8ce02",
+      "data_coleta": "2026-11-08T13:01:53"
+    },
+    "rs_crise_abrigos_24052024_20h.csv": {
+      "url": "https://zenodo.org/api/records/13227745/files/rs_crise_abrigos_24052024_20h.csv/content",
+      "tamanho_bytes": 274091,
+      "checksum": "md5:191c7ad6452023438a708a71d3f98406",
+      "data_coleta": "2026-11-08T13:05:18"
+    },
+    "cheias_rhguaiba_2024_db_v12.gpkg": {
+      "url": "https://zenodo.org/api/records/13227745/files/cheias_rhguaiba_2024_db_v12.gpkg/content",
+      "tamanho_bytes": 196124672,
+      "checksum": "md5:620afc4afef02d7e4eed567075876299",
+      "data_coleta": "2026-11-08T13:56:43"
+    }
+  },
+  "camada_mancha_2024": "rhguaiba_planet-skysat_inundacao_obs_20240506",
+  "camada_bairros": "poa_admin_bairros"
+}
