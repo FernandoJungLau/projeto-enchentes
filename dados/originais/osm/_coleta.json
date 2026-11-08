@@ -1,0 +1,11 @@
+{
+  "fonte": "OpenStreetMap - escolas e unidades de saúde (Overpass API)",
+  "url": "https://www.openstreetmap.org/copyright",
+  "servidor": "https://overpass-api.de/api/interpreter",
+  "consulta": "[out:json][timeout:120];\narea[\"name\"=\"Porto Alegre\"][\"admin_level\"=\"8\"]->.poa;\nnwr[\"amenity\"~\"^(school|kindergarten|hospital|clinic|doctors)$\"](area.poa);\nout center tags;",
+  "data_coleta": "2026-11-08T13:50:12",
+  "licenca": "ODbL 1.0 (© contribuidores do OpenStreetMap)",
+  "arquivos": [
+    "osm_escolas_saude_poa.json"
+  ]
+}

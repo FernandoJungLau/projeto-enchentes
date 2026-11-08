@@ -1,0 +1,11 @@
+# Ambiente Python
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+
+# Arquivos do sistema
+.DS_Store
+
+# Arquivos acima de 50 MB (baixar com scripts/coleta_zenodo.py)
+dados/originais/zenodo/*.gpkg
+dados/originais/zenodo/*.part
