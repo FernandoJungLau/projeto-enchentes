@@ -215,7 +215,7 @@ print("\nBairros tocados pela Sentinel-2 e NÃO pela Planet/Skysat:", sorted(so_
 # 7. Cruzamento com o INCT (nível 5,3 m) e grafia dos bairros
 # -----------------------------
 print("\n7. Cruzamento com o INCT")
-with open(RAIZ / "dados" / "originais" / "INCT SiMAI" / "data.json", encoding="utf-8") as f:
+with open(RAIZ / "dados" / "originais" / "INCT" / "data.json", encoding="utf-8") as f:
     inct = json.load(f)
 
 nomes_inct = sorted(inct["5_3m"].keys())
