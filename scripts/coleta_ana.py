@@ -98,6 +98,13 @@ for arq in sorted(PASTA.glob(f"ana_{ESTACAO}_*.xml")):
         registro["arquivo"] = arq.name
         linhas.append(registro)
 
+# Se nenhum mês foi salvo (serviço fora do ar ou sem dados), não há o que verificar
+if len(linhas) == 0:
+    print("Nenhuma leitura salva em", PASTA.relative_to(RAIZ))
+    print("Meses sem dados ou com erro:", falhas)
+    print("O serviço da ANA às vezes fica instável: tente de novo mais tarde.")
+    raise SystemExit(1)
+
 ana = pd.DataFrame(linhas)
 print("Arquivos lidos:", ana["arquivo"].nunique(), "| Leituras:", ana.shape[0])
 print("Colunas:", list(ana.columns))
@@ -132,3 +139,5 @@ print("\nDias com leitura:", len(por_dia), "| dias com menos de 96 leituras:", (
 
 if falhas:
     print("\nATENÇÃO: meses sem dados ou com erro:", falhas)
+    print("Rode o script de novo mais tarde: só os meses que faltam serão pedidos.")
+    raise SystemExit(1)  # código de saída 1 = coleta incompleta
