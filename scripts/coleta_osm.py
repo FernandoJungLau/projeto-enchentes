@@ -38,9 +38,12 @@ nwr["amenity"~"^(school|kindergarten|hospital|clinic|doctors)$"](area.poa);
 out center tags;
 """
 
-# O servidor principal costuma ficar sobrecarregado; tenta os espelhos em sequência
+# O servidor principal costuma ficar sobrecarregado; tenta os espelhos em sequência.
+# Testados em 11/11/2026: o espelho francês devolveu os mesmos 708 registros
+# (a base dele pode estar algumas semanas atrás; a data fica salva no JSON).
+# O maps.mail.ru saiu da lista porque não respondia mais.
 SERVIDORES = ["https://overpass-api.de/api/interpreter",
-              "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
+              "https://overpass.openstreetmap.fr/api/interpreter",
               "https://overpass.private.coffee/api/interpreter"]
 
 # -----------------------------
@@ -54,7 +57,8 @@ else:
     for url in SERVIDORES:
         try:
             print("   consultando:", url)
-            r = requests.post(url, data={"data": CONSULTA}, headers=HEADERS, timeout=300)
+            # A consulta tem [timeout:120] no servidor; 180 s dá margem sem travar muito tempo
+            r = requests.post(url, data={"data": CONSULTA}, headers=HEADERS, timeout=180)
             r.raise_for_status()
             r.json()  # falha se o servidor devolveu uma página de erro em vez de JSON
             servidor_usado = url
