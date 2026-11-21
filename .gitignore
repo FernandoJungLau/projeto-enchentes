@@ -9,3 +9,16 @@ __pycache__/
 # Arquivos acima de 50 MB (baixar com scripts/coleta_zenodo.py)
 dados/originais/zenodo/*.gpkg
 dados/originais/zenodo/*.part
+
+# Materiais de aula (não vão para o GitHub)
+materiais_aula/
+AULA 19.pdf
+AULA 20.pdf
+AULA 21.pdf
+Aula19.ipynb
+Aula20.ipynb
+Amostragrem_Discretização.ipynb
+
+# Material de estudo pessoal
+explicacao_pessoa1.md
+apresentacao_victoria.md
