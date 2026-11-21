@@ -1,0 +1,472 @@
+[
+ {
+  "nome_malha":"ABERTA DOS MORROS",
+  "bairro":"Aberta dos Morros",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"AGRONOMIA",
+  "bairro":"Agronomia",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"ANCHIETA",
+  "bairro":"Anchieta",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"ARQUIPÉLAGO",
+  "bairro":"Arquipélago",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"AUXILIADORA",
+  "bairro":"Auxiliadora",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"AZENHA",
+  "bairro":"Azenha",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"BELA VISTA",
+  "bairro":"Bela Vista",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"BELÉM NOVO",
+  "bairro":"Belém Novo",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"BELÉM VELHO",
+  "bairro":"Belém Velho",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"BOA VISTA",
+  "bairro":"Boa Vista",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"BOA VISTA DO SUL",
+  "bairro":"Boa Vista do Sul",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"BOM FIM",
+  "bairro":"Bom Fim",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"BOM JESUS",
+  "bairro":"Bom Jesus",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"CAMAQUÃ",
+  "bairro":"Camaquã",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"CAMPO NOVO",
+  "bairro":"Campo Novo",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"CASCATA",
+  "bairro":"Cascata",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"CAVALHADA",
+  "bairro":"Cavalhada",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"CEL. APARICIO BORGES",
+  "bairro":"Coronel Aparício Borges",
+  "ajuste":"abreviação 'CEL.' na malha"
+ },
+ {
+  "nome_malha":"CENTRO HISTÓRICO",
+  "bairro":"Centro Histórico",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"CHAPÉU DO SOL",
+  "bairro":"Chapéu do Sol",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"CHÁCARA DAS PEDRAS",
+  "bairro":"Chácara das Pedras",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"CIDADE BAIXA",
+  "bairro":"Cidade Baixa",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"COSTA E SILVA",
+  "bairro":"Costa e Silva",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"CRISTAL",
+  "bairro":"Cristal",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"CRISTO REDENTOR",
+  "bairro":"Cristo Redentor",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"ESPÍRITO SANTO",
+  "bairro":"Espírito Santo",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"EXTREMA",
+  "bairro":"Extrema",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"FARRAPOS",
+  "bairro":"Farrapos",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"FARROUPILHA",
+  "bairro":"Farroupilha",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"FLORESTA",
+  "bairro":"Floresta",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"GLÓRIA",
+  "bairro":"Glória",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"GUARUJÁ",
+  "bairro":"Guarujá",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"HIGIENÓPOLIS",
+  "bairro":"Higienópolis",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"HUMAITÁ",
+  "bairro":"Humaitá",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"HÍPICA",
+  "bairro":"Hípica",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"INDEPENDÊNCIA",
+  "bairro":"Independência",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"IPANEMA",
+  "bairro":"Ipanema",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"JARDIM BOTÂNICO",
+  "bairro":"Jardim Botânico",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"JARDIM CARVALHO",
+  "bairro":"Jardim Carvalho",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"JARDIM DO SALSO",
+  "bairro":"Jardim do Salso",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"JARDIM EUROPA",
+  "bairro":"Jardim Europa",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"JARDIM FLORESTA",
+  "bairro":"Jardim Floresta",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"JARDIM ISABEL",
+  "bairro":"Jardim Isabel",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"JARDIM ITU",
+  "bairro":"Jardim Itu",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"JARDIM LEOPOLDINA",
+  "bairro":"Jardim Leopoldina",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"JARDIM LINDÓIA",
+  "bairro":"Jardim Lindóia",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"JARDIM SABARÁ",
+  "bairro":"Jardim Sabará",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"JARDIM SÃO PEDRO",
+  "bairro":"Jardim São Pedro",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"LAGEADO",
+  "bairro":"Lageado",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"LAMI",
+  "bairro":"Lami",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"LOMBA DO PINHEIRO",
+  "bairro":"Lomba do Pinheiro",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"MEDIANEIRA",
+  "bairro":"Medianeira",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"MENINO DEUS",
+  "bairro":"Menino Deus",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"MOINHOS DE VENTO",
+  "bairro":"Moinhos de Vento",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"MONTSERRAT",
+  "bairro":"Mont'Serrat",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"MORRO SANTANA",
+  "bairro":"Morro Santana",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"MÁRIO QUINTANA",
+  "bairro":"Mário Quintana",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"NAVEGANTES",
+  "bairro":"Navegantes",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"NONOAI",
+  "bairro":"Nonoai",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"PARQUE SANTA FÉ",
+  "bairro":"Parque Santa Fé",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"PARTENON",
+  "bairro":"Partenon",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"PASSO DA AREIA",
+  "bairro":"Passo D'Areia",
+  "ajuste":"malha escreve 'DA AREIA', INCT escreve 'D'Areia'"
+ },
+ {
+  "nome_malha":"PASSO DAS PEDRAS",
+  "bairro":"Passo das Pedras",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"PEDRA REDONDA",
+  "bairro":"Pedra Redonda",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"PETRÓPOLIS",
+  "bairro":"Petrópolis",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"PITINGA",
+  "bairro":"Pitinga",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"PONTA GROSSA",
+  "bairro":"Ponta Grossa",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"PRAIA DE BELAS",
+  "bairro":"Praia de Belas",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"RESTINGA",
+  "bairro":"Restinga",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"RIO BRANCO",
+  "bairro":"Rio Branco",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"RUBEM BERTA",
+  "bairro":"Rubem Berta",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"SANTA CECÍLIA",
+  "bairro":"Santa Cecília",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"SANTA MARIA GORETTI",
+  "bairro":"Santa Maria Goretti",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"SANTA ROSA DE LIMA",
+  "bairro":"Santa Rosa de Lima",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"SANTA TEREZA",
+  "bairro":"Santa Tereza",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"SANTANA",
+  "bairro":"Santana",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"SANTO ANTÔNIO",
+  "bairro":"Santo Antônio",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"SARANDI",
+  "bairro":"Sarandi",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"SERRARIA",
+  "bairro":"Serraria",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"SÃO CAETANO",
+  "bairro":"São Caetano",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"SÃO GERALDO",
+  "bairro":"São Geraldo",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"SÃO JOÃO",
+  "bairro":"São João",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"SÃO SEBASTIÃO",
+  "bairro":"São Sebastião",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"SÉTIMO CÉU",
+  "bairro":"Sétimo Céu",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"TERESÓPOLIS",
+  "bairro":"Teresópolis",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"TRISTEZA",
+  "bairro":"Tristeza",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"TRÊS FIGUEIRAS",
+  "bairro":"Três Figueiras",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"VILA  ASSUNÇÃO",
+  "bairro":"Vila Assunção",
+  "ajuste":"espaço duplo na malha; maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"VILA CONCEIÇÃO",
+  "bairro":"Vila Conceição",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"VILA IPIRANGA",
+  "bairro":"Vila Ipiranga",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"VILA JARDIM",
+  "bairro":"Vila Jardim",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"VILA JOÃO PESSOA",
+  "bairro":"Vila João Pessoa",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"VILA NOVA",
+  "bairro":"Vila Nova",
+  "ajuste":"maiúsculas\/acentos"
+ },
+ {
+  "nome_malha":"VILA SÃO JOSÉ",
+  "bairro":"Vila São José",
+  "ajuste":"maiúsculas\/acentos"
+ }
+]
