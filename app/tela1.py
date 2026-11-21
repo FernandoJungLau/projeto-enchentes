@@ -6,8 +6,8 @@ import streamlit as st
 import dados
 import mapas
 from dados import NIVEL_REF_2024, RECORDE_2024_M, fmt_dec, fmt_int
-from estilo import (AZUL, AZUL_ESCURO, CINZA, CINZA_BARRA, CONFIG_PLOTLY, faixa_foto,
-                    layout_base)
+from estilo import (AZUL, AZUL_ESCURO, CINZA, CINZA_BARRA, CINZA_TEXTO, CONFIG_PLOTLY,
+                    faixa_foto, layout_base)
 
 TOTAL_BAIRROS = 94
 NIVEIS = [round(3.0 + 0.1 * i, 1) for i in range(71)]  # 3,0 a 10,0 m
@@ -134,18 +134,31 @@ with dir_:
         .head(10)
         .reset_index(drop=True)
     )
-    tabela = ranking.assign(
-        pessoas=ranking["affected_population"].map(fmt_int),
-        pct=ranking["percentage"].map(lambda p: f"{fmt_dec(p)}%"),
-    )[["bairro", "pessoas", "pct"]]
-    tabela.index = tabela.index + 1
-    st.dataframe(
-        tabela,
-        column_config={"bairro": "Bairro",
-                       "pessoas": st.column_config.TextColumn("Pessoas (est.)", alignment="right"),
-                       "pct": st.column_config.TextColumn("% prédios", alignment="right")},
-        width="stretch",
-    )
+    if ranking.empty:
+        st.markdown(f"Nenhum bairro tem prédios afetados a {fmt_dec(nivel)} m.")
+    else:
+        # Barras horizontais em ordem: 1º no topo, posição junto do nome e valor na
+        # ponta da barra (o eixo x fica sem rótulos, como no gráfico por bairro da Tela 2).
+        por_pessoas = col == "affected_population"
+        valores = ranking[col]
+        rotulos_valor = [fmt_int(v) if por_pessoas else f"{fmt_dec(v)}%" for v in valores]
+        fig = go.Figure(go.Bar(
+            x=valores,
+            y=[f"{i}º  {b}" for i, b in enumerate(ranking["bairro"], start=1)],
+            orientation="h",
+            marker=dict(color=AZUL, cornerradius=3),
+            text=rotulos_valor, textposition="outside", cliponaxis=False,
+            textfont=dict(size=13, color=CINZA_TEXTO),
+            customdata=ranking[["affected_population", "percentage"]],
+            hovertemplate="<b>%{y}</b><br>%{customdata[0]:,.0f} pessoas (est.)"
+                          "<br>%{customdata[1]:.1f}% dos prédios<extra></extra>",
+        ))
+        fig.update_xaxes(showticklabels=False, showgrid=False, title=None,
+                         range=[0, valores.max() * 1.18 if por_pessoas else 112])
+        fig.update_yaxes(title=None, autorange="reversed", tickfont=dict(size=13))
+        st.plotly_chart(layout_base(fig, altura=40 * len(ranking) + 40, bargap=0.25,
+                                    margin=dict(l=10, r=20, t=10, b=10)),
+                        config=CONFIG_PLOTLY)
     st.caption("Pessoas afetadas = população do bairro × % de prédios afetados.")
 
 # Barras com todos os bairros atingidos

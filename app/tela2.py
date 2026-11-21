@@ -1,18 +1,18 @@
 """Tela 2: o que outras bases (Zenodo/UFRGS, OpenStreetMap, ANA) acrescentam à simulação do INCT?"""
 
+import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
 import dados
 import mapas
-from dados import NIVEL_REF_2024, fmt_dec, fmt_int
+from dados import fmt_dec, fmt_int
 from estilo import (AZUL, AZUL_ESCURO, CINZA, CINZA_TEXTO, CONFIG_PLOTLY, MANCHA, faixa_foto,
                     layout_base)
 
 LIMIAR_ALAGOU = 1.0  # % mínima da área para o bairro contar como atingido (mesmo critério do notebook)
 CENTRO_POA = dict(lat=-30.07, lon=-51.19)  # centro do mapa de pontos
-NIVEIS = [round(3.0 + 0.1 * i, 1) for i in range(31)]  # 3,0 a 6,0 m
 
 
 def bairros_txt(n: int) -> str:
@@ -189,88 +189,75 @@ with barra_col:
                     config=CONFIG_PLOTLY)
     st.caption("Os 12 bairros com mais estabelecimentos dentro da mancha.")
 
-with st.expander(f"Lista dos {len(dentro)} estabelecimentos dentro da mancha"):
-    lista = (dentro[["nome", "grupo", "bairro_poligono", "rua", "numero"]]
-             .sort_values(["bairro_poligono", "grupo", "nome"]))
-    st.dataframe(
-        lista,
-        column_config={"nome": "Nome", "grupo": "Tipo", "bairro_poligono": "Bairro",
-                       "rua": "Rua", "numero": "Número"},
-        hide_index=True, width="stretch",
-    )
-    st.download_button(
-        "Baixar lista (CSV)", lista.to_csv(index=False).encode("utf-8-sig"),
-        file_name="estabelecimentos_na_mancha_20240506.csv", mime="text/csv",
-    )
-
 st.caption(
     "O OpenStreetMap mostra o que estava mapeado em novembro de 2026, não necessariamente "
     "o que existia em maio de 2024, e o mapeamento colaborativo pode estar incompleto."
 )
 
-# 3. Nível do Guaíba em 2024
-st.header("3. Quanto tempo o Guaíba ficou acima de cada nível?")
-f1, f2 = st.columns(2)
-if "_nivel_t2" not in st.session_state:
-    st.session_state["_nivel_t2"] = round(
-        min(st.session_state.get("nivel_escolhido", NIVEL_REF_2024), 6.0), 1)
+# 3. Pessoas afetadas ao longo da cheia (ANA + INCT)
+st.header("3. Quantas pessoas a cheia alcançou, dia a dia?")
 
-
-def _sincroniza_nivel():
-    st.session_state["nivel_escolhido"] = st.session_state["_nivel_t2"]
-
-
-with f1:
-    nivel_ref = st.select_slider(
-        "Nível (o mesmo da outra tela)", options=NIVEIS,
-        format_func=lambda v: f"{fmt_dec(v)} m",
-        key="_nivel_t2", on_change=_sincroniza_nivel,
-    )
-with f2:
-    inicio, fim = ana["data_hora"].min().to_pydatetime(), ana["data_hora"].max().to_pydatetime()
-    periodo = st.slider("Período", inicio, fim, (inicio, fim), format="DD/MM/YYYY")
-
-serie = ana[(ana["data_hora"] >= periodo[0]) & (ana["data_hora"] <= periodo[1])]
-validas = serie.dropna(subset=["nivel_m"])
+# Cada leitura da ANA vira a estimativa do INCT para o nível simulado logo abaixo
+# (5,35 m -> 5,3 m), a mesma referência usada na Tela 1. Abaixo de 3,0 m o INCT
+# não simula, e a estimativa fica em zero.
+leituras = ana.dropna(subset=["nivel_m"]).copy()
+pessoas_nivel = dados.inct_por_nivel().set_index("nivel_m")["pessoas"]
+nivel_sim = (np.floor(leituras["nivel_m"] * 10 + 1e-9) / 10).clip(upper=10.0).round(1)
+leituras["pessoas"] = nivel_sim.map(pessoas_nivel).where(leituras["nivel_m"] >= 3.0, 0)
 # Cada leitura vale o intervalo até a próxima (em geral 15 min), limitado a 1 h para
-# que uma lacuna longa de leituras não conte como tempo acima do nível.
-dur_h = (validas["data_hora"].diff().shift(-1).dt.total_seconds().fillna(900) / 3600).clip(upper=1)
-horas_acima = dur_h[validas["nivel_m"] >= nivel_ref].sum()
-pico = validas.loc[validas["nivel_m"].idxmax()] if len(validas) else None
-cid = dados.inct_por_nivel().set_index("nivel_m")
+# que uma lacuna longa não conte como tempo no mesmo nível.
+dur_h = (leituras["data_hora"].diff().shift(-1).dt.total_seconds().fillna(900) / 3600).clip(upper=1)
+pessoas_dia = (leituras["pessoas"] * dur_h).sum() / 24
+dias_acima_3 = dur_h[leituras["nivel_m"] >= 3.0].sum() / 24
+pico = leituras.loc[leituras["pessoas"].idxmax()]
+inicio, fim = leituras.iloc[0], leituras.iloc[-1]
 
-n1, n2, n3 = st.columns(3)
-if horas_acima >= 24:
-    tempo_txt = f"{fmt_dec(horas_acima / 24)} dias"
-elif horas_acima > 0:
-    tempo_txt = f"{fmt_dec(horas_acima)} h"
-else:
-    tempo_txt = "nenhum"
-n1.metric(f"Tempo acima de {fmt_dec(nivel_ref)} m", tempo_txt)
-if pico is not None:
-    n2.metric("Maior nível no período", f"{fmt_dec(pico['nivel_m'], 2)} m",
-              help=f"Em {pico['data_hora']:%d/%m/%Y %H:%M}")
-n3.metric(f"Pessoas afetadas a {fmt_dec(nivel_ref)} m (INCT, est.)",
-          fmt_int(cid.loc[round(nivel_ref, 1), "pessoas"]))
+st.markdown(
+    f"Convertendo o nível medido pela ANA na estimativa do INCT, o pico foi de "
+    f"**{fmt_int(pico['pessoas'])} pessoas** em {pico['data_hora']:%d/%m}. A estimativa cai ao "
+    "longo de maio, zera quando o rio desce abaixo de 3,0 m em junho e volta a subir no fim do mês."
+)
+k1, k2, k3 = st.columns(3)
+k1.metric("Pico de pessoas afetadas (est.)", fmt_int(pico["pessoas"]),
+          help=f"Em {pico['data_hora']:%d/%m/%Y às %H:%M}, com o Guaíba a "
+               f"{fmt_dec(pico['nivel_m'], 2)} m.")
+k2.metric("Pessoas-dia afetadas (est.)", f"{fmt_dec(pessoas_dia / 1e6, 2)} milhões",
+          help="Soma, em todas as leituras, das pessoas afetadas × tempo que o rio ficou "
+               "naquele nível. Uma pessoa atingida por 10 dias conta 10.")
+k3.metric("Dias com o Guaíba acima de 3,0 m", f"{fmt_dec(dias_acima_3)}",
+          help="Pelo menos: a série já começa acima de 3,0 m e termina acima de 3,0 m.")
 
 fig = go.Figure()
-fig.add_scatter(x=serie["data_hora"], y=serie["nivel_m"], mode="lines",
-                line=dict(color=AZUL, width=2), connectgaps=False,
-                hovertemplate="%{x|%d/%m %H:%M}: %{y:.2f} m<extra></extra>")
-fig.add_hline(y=nivel_ref, line=dict(color=AZUL_ESCURO, width=1.5))
-fig.add_annotation(x=1, xref="paper", xanchor="right", y=nivel_ref, yanchor="bottom",
-                   text=f"{fmt_dec(nivel_ref)} m", showarrow=False,
-                   font=dict(color=AZUL_ESCURO))
-fig.add_hline(y=3.0, line=dict(color=CINZA, dash="dot", width=1))
-fig.add_annotation(x=1, xref="paper", xanchor="right", y=3.0, yanchor="top",
-                   text="3,0 m, início da simulação do INCT", showarrow=False,
+fig.add_scatter(
+    x=ana["data_hora"],
+    y=leituras.set_index("data_hora")["pessoas"].reindex(ana["data_hora"]).to_numpy(),
+    mode="lines", line=dict(color=AZUL, width=2), fill="tozeroy", fillcolor=MANCHA,
+    connectgaps=False,
+    customdata=ana["nivel_m"],
+    hovertemplate="%{x|%d/%m %H:%M}<br>Guaíba a %{customdata:.2f} m"
+                  "<br>%{y:,.0f} pessoas (est.)<extra></extra>",
+)
+fig.add_scatter(
+    x=[pico["data_hora"]], y=[pico["pessoas"]], mode="markers+text",
+    marker=dict(color=AZUL_ESCURO, size=10, line=dict(color="white", width=2)),
+    text=[f"Pico: {fmt_int(pico['pessoas'])}"], textposition="middle right",
+    textfont=dict(color=AZUL_ESCURO, size=13), hoverinfo="skip",
+)
+data_mancha = pd.Timestamp("2024-05-06 12:00")
+fig.add_vline(x=data_mancha, line=dict(color=CINZA, dash="dash", width=1.2))
+fig.add_annotation(x=data_mancha, y=0, yref="paper", yanchor="bottom", xanchor="left",
+                   text=" Mancha de satélite (seção 1)", showarrow=False,
                    font=dict(color=CINZA_TEXTO, size=11))
-fig.update_xaxes(title=None, tickformat="%d/%m")
-fig.update_yaxes(title="Nível do Guaíba (m)", range=[0, 6])
-st.plotly_chart(layout_base(fig, altura=360), config=CONFIG_PLOTLY)
+fig.update_xaxes(title=None, tickformat="%d/%m", dtick=7 * 24 * 3600 * 1000)
+fig.update_yaxes(title="Pessoas afetadas (est.)", rangemode="tozero", tickformat=",.0f")
+st.plotly_chart(layout_base(fig, altura=280, margin=dict(l=10, r=20, t=10, b=10)),
+                config=CONFIG_PLOTLY)
 st.caption(
-    "Leituras a cada 15 minutos na estação Usina do Gasômetro. Os trechos sem linha são "
-    f"leituras que faltam ({fmt_int(serie['nivel_m'].isna().sum())} no período)."
+    "Nível a cada 15 minutos na estação Usina do Gasômetro (ANA), cruzado com a simulação "
+    "do INCT. A série começa em "
+    f"{inicio['data_hora']:%d/%m às %Hh} com o rio já a {fmt_dec(inicio['nivel_m'], 2)} m e "
+    f"termina em {fim['data_hora']:%d/%m} a {fmt_dec(fim['nivel_m'], 2)} m, então os totais "
+    "são mínimos. Trechos sem linha são leituras que faltam."
 )
 
 # Fontes
