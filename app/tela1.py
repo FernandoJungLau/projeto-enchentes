@@ -31,8 +31,8 @@ faixa_foto(
     "Fechamento_das_comportas_do_Cais_Mau%C3%A1._-_2024-05-02_-_Luciano_Lanes-PMPA.jpg",
 )
 st.title("Se o Guaíba subir")
-st.caption("Simulação do INCT SiMAI para níveis de 3,0 a 10,0 m · Projeto de extensão da "
-           "disciplina Coleta, Preparação e Análise de Dados, PUCRS · Novembro de 2026")
+st.caption("Simulação do INCT SiMAI para níveis de 3,0 a 10,0 m. Projeto de extensão da "
+           "disciplina Coleta, Preparação e Análise de Dados, PUCRS, novembro de 2026.")
 st.markdown("**Os números desta página são estimativas de um modelo**, não previsão nem "
             "contagem oficial. As limitações estão no fim da página.")
 
@@ -76,33 +76,29 @@ with st.container(border=True):
 
 # Curva da população afetada
 st.subheader("Pessoas afetadas em cada nível")
-st.markdown(
-    f"A {fmt_dec(nivel)} m, o modelo estima **{fmt_int(atual['pessoas'])} pessoas** em "
-    f"{int(atual['bairros'])} dos 94 bairros. A linha tracejada marca o pico de maio de 2024."
-)
 fig = go.Figure()
 fig.add_scatter(
     x=cidade["nivel_m"], y=cidade["pessoas"], mode="lines",
     line=dict(color=AZUL, width=2.5),
     hovertemplate="%{x:.1f} m: %{y:,.0f} pessoas<extra></extra>",
 )
-fig.add_vline(x=RECORDE_2024_M, line=dict(color=CINZA, dash="dash", width=1.5))
+fig.add_vline(x=RECORDE_2024_M, line=dict(color=CINZA, dash="dash", width=2))
 fig.add_annotation(
     x=RECORDE_2024_M, y=1, yref="paper", yanchor="bottom", xanchor="left",
     text=f" Maio de 2024: {fmt_dec(RECORDE_2024_M, 2)} m",
-    showarrow=False, font=dict(color="#52514e"),
+    showarrow=False, font=dict(color=CINZA_TEXTO),
 )
 fig.add_scatter(
     x=[nivel], y=[atual["pessoas"]], mode="markers+text",
     marker=dict(color=AZUL_ESCURO, size=12, line=dict(color="white", width=2)),
     text=[fmt_int(atual["pessoas"])], textposition="top left",
-    textfont=dict(color=AZUL_ESCURO, size=13),
+    textfont=dict(color=AZUL_ESCURO, size=16),
     hovertemplate="Nível escolhido: %{x:.1f} m<extra></extra>",
 )
 fig.update_xaxes(title="Nível do Guaíba (m)", range=[2.9, 10.1], dtick=1)
 fig.update_yaxes(title="Pessoas afetadas (est.)", rangemode="tozero", tickformat=",.0f")
 st.plotly_chart(layout_base(fig, altura=320, margin=dict(l=10, r=20, t=40, b=10)),
-                config=CONFIG_PLOTLY)
+                theme=None, config=CONFIG_PLOTLY)
 
 # Mapa e ranking
 todos = df[df["nivel_m"] == nivel].copy()
@@ -120,7 +116,7 @@ with esq:
               "(%{customdata[1]:,} de %{customdata[2]:,})"
               "<br>%{customdata[3]:,} pessoas (est.)<extra></extra>",
     )
-    st.plotly_chart(mapa, config=CONFIG_PLOTLY)
+    st.plotly_chart(mapa, theme=None, config=CONFIG_PLOTLY)
 
 with dir_:
     st.subheader("Bairros mais afetados")
@@ -144,21 +140,21 @@ with dir_:
         rotulos_valor = [fmt_int(v) if por_pessoas else f"{fmt_dec(v)}%" for v in valores]
         fig = go.Figure(go.Bar(
             x=valores,
-            y=[f"{i}º  {b}" for i, b in enumerate(ranking["bairro"], start=1)],
+            y=[f"{i}º {b}" for i, b in enumerate(ranking["bairro"], start=1)],
             orientation="h",
             marker=dict(color=AZUL, cornerradius=3),
             text=rotulos_valor, textposition="outside", cliponaxis=False,
-            textfont=dict(size=13, color=CINZA_TEXTO),
+            textfont=dict(size=16, color=CINZA_TEXTO),
             customdata=ranking[["affected_population", "percentage"]],
             hovertemplate="<b>%{y}</b><br>%{customdata[0]:,.0f} pessoas (est.)"
                           "<br>%{customdata[1]:.1f}% dos prédios<extra></extra>",
         ))
         fig.update_xaxes(showticklabels=False, showgrid=False, title=None,
                          range=[0, valores.max() * 1.18 if por_pessoas else 112])
-        fig.update_yaxes(title=None, autorange="reversed", tickfont=dict(size=13))
+        fig.update_yaxes(title=None, autorange="reversed")
         st.plotly_chart(layout_base(fig, altura=40 * len(ranking) + 40, bargap=0.25,
                                     margin=dict(l=10, r=20, t=10, b=10)),
-                        config=CONFIG_PLOTLY)
+                        theme=None, config=CONFIG_PLOTLY)
     st.caption("Pessoas afetadas = população do bairro × % de prédios afetados.")
 
 # Barras com todos os bairros atingidos
@@ -172,16 +168,16 @@ fig = go.Figure(go.Bar(
     marker=dict(color=[AZUL if b in destaque else CINZA_BARRA for b in barras["bairro"]],
                 cornerradius=3),
     text=[f"{fmt_dec(p)}%" for p in barras["percentage"]],
-    textposition="outside", cliponaxis=False, textfont=dict(size=12),
+    textposition="outside", cliponaxis=False, textfont=dict(size=16),
     customdata=barras[["affected_buildings", "total_buildings"]],
     hovertemplate="<b>%{y}</b><br>%{x:.1f}% dos prédios"
                   "<br>%{customdata[0]:,} de %{customdata[1]:,}<extra></extra>",
 ))
 fig.update_xaxes(range=[0, 108], tickvals=[0, 25, 50, 75, 100],
                  ticktext=["0%", "25%", "50%", "75%", "100%"], title=None, side="top")
-fig.update_yaxes(title=None, tickfont=dict(size=12))
-st.plotly_chart(layout_base(fig, altura=max(240, 18 * len(barras) + 60), bargap=0.3),
-                config=CONFIG_PLOTLY)
+fig.update_yaxes(title=None)
+st.plotly_chart(layout_base(fig, altura=max(240, 26 * len(barras) + 60), bargap=0.3),
+                theme=None, config=CONFIG_PLOTLY)
 
 # Limitações
 st.divider()

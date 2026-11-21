@@ -25,9 +25,9 @@ faixa_foto(
     "https://commons.wikimedia.org/wiki/File:Enchente_Porto_Alegre_2024_07.jpg",
     extra=', <a href="https://creativecommons.org/licenses/by/4.0" style="color:inherit">CC BY 4.0</a>',
 )
-st.title("Comparação com maio de 2024")
+st.title("O que outras fontes de dados nos dizem?")
 st.markdown(
-    "A simulação do INCT ao lado de três fontes independentes: a mancha de inundação "
+    "Esta página compara a simulação do INCT com três fontes independentes: a mancha de inundação "
     "mapeada pela UFRGS, as escolas e unidades de saúde do OpenStreetMap e o nível do "
     "Guaíba medido pela ANA. Os números do INCT continuam sendo estimativas."
 )
@@ -38,7 +38,7 @@ osm = dados.osm_mancha()
 ana = dados.ana()
 
 # 1. A simulação bate com a mancha observada?
-st.header("1. A simulação bate com a mancha de 2024?")
+st.subheader("1. A simulação confere com as cheias históricas?")
 
 # Só manchas a partir de 3,0 m: abaixo disso o INCT não simula.
 manchas = (
@@ -68,67 +68,45 @@ ambos = comp[(comp["pct_area_alagada"] > LIMIAR_ALAGOU) & (comp["percentage"] > 
 st.markdown(
     f"As duas fontes apontam os mesmos bairros em **{len(ambos)} casos**. "
     f"{bairros_txt(len(so_inct))} aparecem só no INCT e {bairros_txt(len(so_mancha))} só na "
-    "mancha. Mesma escala nos dois mapas: tons parecidos indicam concordância."
+    "mancha. Os dois mapas usam a mesma escala, então tons parecidos indicam concordância. Os bairros "
+    "em que as fontes divergem têm contorno escuro nos dois."
 )
+divergentes = pd.concat([
+    so_mancha.assign(onde="Só na mancha"), so_inct.assign(onde="Só no INCT")
+])
 mapa_e, mapa_d = st.columns(2, gap="medium")
 with mapa_e:
     st.markdown(f"**Área do bairro sob a mancha ({rotulos[cheia].split(',')[0]})**")
     st.plotly_chart(mapas.coropletico(
         comp[["bairro", "pct_area_alagada"]], coluna="pct_area_alagada", rotulo="% área",
         hover="<b>%{location}</b><br>%{customdata[0]:.1f}% da área<extra></extra>",
-        altura=420, escala=False, zoom=9.0,
-    ), config=CONFIG_PLOTLY, key="mapa_mancha")
+        altura=420, escala=False, zoom=9.0, contorno=list(divergentes["bairro"]),
+    ), theme=None, config=CONFIG_PLOTLY, key="mapa_mancha")
 with mapa_d:
     st.markdown(f"**Prédios afetados no INCT a {fmt_dec(nivel_inct)} m**")
     st.plotly_chart(mapas.coropletico(
         comp[["bairro", "percentage"]], coluna="percentage", rotulo="%",
         hover="<b>%{location}</b><br>%{customdata[0]:.1f}% dos prédios<extra></extra>",
-        altura=420, zoom=9.0,
-    ), config=CONFIG_PLOTLY, key="mapa_inct")
-
-divergentes = pd.concat([
-    so_mancha.assign(onde="Só na mancha"), so_inct.assign(onde="Só no INCT")
-])
-tab, nota = st.columns([3, 2], gap="large")
-with tab:
-    if len(divergentes):
-        st.dataframe(
-            divergentes.assign(
-                area=divergentes["pct_area_alagada"].map(lambda v: f"{fmt_dec(v)}%"),
-                predios=divergentes["percentage"].map(lambda v: f"{fmt_dec(v)}%"),
-            )[["bairro", "onde", "area", "predios"]],
-            column_config={"bairro": "Bairro que diverge", "onde": "Atingido",
-                           "area": st.column_config.TextColumn("Área sob a mancha",
-                                                               alignment="right"),
-                           "predios": st.column_config.TextColumn("Prédios no INCT",
-                                                                  alignment="right")},
-            hide_index=True, width="stretch",
-        )
-    else:
-        st.markdown("Nenhum bairro diverge.")
-with nota:
-    st.caption(f"Bairro atingido: mais de {fmt_dec(LIMIAR_ALAGOU, 0)}% da área sob a mancha, "
-               "ou pelo menos um prédio afetado no INCT. O INCT não tem o nível exato da "
-               f"mancha ({fmt_dec(nivel_cheia, 2)} m); usamos o mais próximo, "
-               f"{fmt_dec(nivel_inct)} m.")
+        altura=420, zoom=9.0, contorno=list(divergentes["bairro"]),
+    ), theme=None, config=CONFIG_PLOTLY, key="mapa_inct")
 
 with st.expander("Ver comparação bairro a bairro"):
     st.markdown(f"**% da área alagada × % de prédios afetados no INCT a {fmt_dec(nivel_inct)} m**")
     fig = go.Figure()
     fig.add_scatter(x=[0, 100], y=[0, 100], mode="lines",
-                    line=dict(color=CINZA, dash="dot", width=1), hoverinfo="skip")
+                    line=dict(color=CINZA, dash="dot", width=2), hoverinfo="skip")
     fig.add_annotation(x=8, y=2, xanchor="left", text="valores iguais", showarrow=False,
-                       font=dict(color=CINZA_TEXTO, size=11), textangle=-35)
+                       font=dict(color=CINZA_TEXTO, size=15), textangle=-35)
     fig.add_scatter(
         x=comp["pct_area_alagada"], y=comp["percentage"], mode="markers",
-        marker=dict(color=AZUL, size=9, opacity=0.8, line=dict(color="white", width=1)),
+        marker=dict(color=AZUL, size=10, opacity=0.85, line=dict(color="white", width=1)),
         customdata=comp[["bairro"]],
         hovertemplate="<b>%{customdata[0]}</b><br>Área alagada: %{x:.1f}%"
                       "<br>Prédios afetados (INCT): %{y:.1f}%<extra></extra>",
     )
     fig.update_xaxes(title="% da área do bairro sob a mancha", range=[-3, 103])
     fig.update_yaxes(title="% de prédios afetados (INCT)", range=[-3, 103])
-    st.plotly_chart(layout_base(fig, altura=420), config=CONFIG_PLOTLY)
+    st.plotly_chart(layout_base(fig, altura=420), theme=None, config=CONFIG_PLOTLY)
     st.caption(
         "Cada ponto é um bairro. Sobre a diagonal, as duas fontes dão o mesmo percentual. "
         "Área e prédios não são a mesma medida: bairros com muita área verde ou de várzea "
@@ -136,7 +114,7 @@ with st.expander("Ver comparação bairro a bairro"):
     )
 
 # 2. Escolas e unidades de saúde na mancha
-st.header("2. Escolas e unidades de saúde na área alagada")
+st.subheader("2. Escolas e unidades de saúde na área alagada")
 grupos = ["Escola", "Creche", "Saúde"]
 escolha = st.pills("Tipo de estabelecimento", grupos, default=grupos, selection_mode="multi")
 filtrado = osm[osm["grupo"].isin(escolha or grupos)]
@@ -148,7 +126,7 @@ k2.metric("Bairros com estabelecimentos na mancha", dentro["bairro_poligono"].nu
 
 mapa_col, barra_col = st.columns([3, 2], gap="large")
 with mapa_col:
-    st.subheader("No mapa")
+    st.markdown("**No mapa**")
     fig = go.Figure()
     fig.add_trace(go.Choroplethmap(
         geojson=dados.geojson("zenodo/mancha_obs_20240506_poa.geojson"),
@@ -156,7 +134,7 @@ with mapa_col:
         colorscale=[[0, MANCHA], [1, MANCHA]], showscale=False,
         marker_line_width=0, hoverinfo="skip", name="Mancha 06/05/2024",
     ))
-    for situacao, cor, tam in [("Fora da mancha", CINZA, 6),
+    for situacao, cor, tam in [("Fora da mancha", CINZA, 8),
                                ("Dentro da mancha de 06/05/2024", AZUL_ESCURO, 9)]:
         p = filtrado[filtrado["situacao"] == situacao]
         fig.add_trace(go.Scattermap(
@@ -166,15 +144,15 @@ with mapa_col:
             hovertemplate="<b>%{customdata[0]}</b><br>%{customdata[1]} · "
                           "%{customdata[2]}<extra></extra>",
         ))
-    fig.update_layout(map=dict(style="carto-positron", center=CENTRO_POA, zoom=10.2),
+    fig.update_layout(map=dict(style="carto-positron-nolabels", center=CENTRO_POA, zoom=10.2),
                       showlegend=True,
                       legend=dict(orientation="h", yanchor="bottom", y=1.0, x=0))
     fig = layout_base(fig, altura=480)
     fig.update_layout(showlegend=True)
-    st.plotly_chart(fig, config=CONFIG_PLOTLY)
+    st.plotly_chart(fig, theme=None, config=CONFIG_PLOTLY)
 
 with barra_col:
-    st.subheader("Por bairro")
+    st.markdown("**Por bairro**")
     por_bairro = (dentro.groupby("bairro_poligono").size().sort_values()
                   .tail(12).rename("n").reset_index())
     fig = go.Figure(go.Bar(
@@ -186,7 +164,7 @@ with barra_col:
     fig.update_xaxes(title=None, showticklabels=False, showgrid=False, rangemode="tozero")
     fig.update_yaxes(title=None)
     st.plotly_chart(layout_base(fig, altura=max(220, 30 * len(por_bairro) + 40)),
-                    config=CONFIG_PLOTLY)
+                    theme=None, config=CONFIG_PLOTLY)
     st.caption("Os 12 bairros com mais estabelecimentos dentro da mancha.")
 
 st.caption(
@@ -195,7 +173,7 @@ st.caption(
 )
 
 # 3. Pessoas afetadas ao longo da cheia (ANA + INCT)
-st.header("3. Quantas pessoas a cheia alcançou, dia a dia?")
+st.subheader("3. Quantas pessoas a cheia alcançou, dia a dia?")
 
 # Cada leitura da ANA vira a estimativa do INCT para o nível simulado logo abaixo
 # (5,35 m -> 5,3 m), a mesma referência usada na Tela 1. Abaixo de 3,0 m o INCT
@@ -213,25 +191,25 @@ pico = leituras.loc[leituras["pessoas"].idxmax()]
 inicio, fim = leituras.iloc[0], leituras.iloc[-1]
 
 st.markdown(
-    f"Convertendo o nível medido pela ANA na estimativa do INCT, o pico foi de "
-    f"**{fmt_int(pico['pessoas'])} pessoas** em {pico['data_hora']:%d/%m}. A estimativa cai ao "
+    "Aplicamos a simulação do INCT ao nível medido pela ANA em cada leitura. O pico foi de "
+    f"**{fmt_int(pico['pessoas'])} pessoas** em {pico['data_hora']:%d/%m}. Depois a estimativa cai ao "
     "longo de maio, zera quando o rio desce abaixo de 3,0 m em junho e volta a subir no fim do mês."
 )
 k1, k2, k3 = st.columns(3)
 k1.metric("Pico de pessoas afetadas (est.)", fmt_int(pico["pessoas"]),
           help=f"Em {pico['data_hora']:%d/%m/%Y às %H:%M}, com o Guaíba a "
                f"{fmt_dec(pico['nivel_m'], 2)} m.")
-k2.metric("Pessoas-dia afetadas (est.)", f"{fmt_dec(pessoas_dia / 1e6, 2)} milhões",
+k2.metric("Pessoas × dias afetados (est.)", f"{fmt_dec(pessoas_dia / 1e6, 2)} milhões",
           help="Soma, em todas as leituras, das pessoas afetadas × tempo que o rio ficou "
                "naquele nível. Uma pessoa atingida por 10 dias conta 10.")
 k3.metric("Dias com o Guaíba acima de 3,0 m", f"{fmt_dec(dias_acima_3)}",
-          help="Pelo menos: a série já começa acima de 3,0 m e termina acima de 3,0 m.")
+          help="É um valor mínimo: a série começa e termina com o rio acima de 3,0 m.")
 
 fig = go.Figure()
 fig.add_scatter(
     x=ana["data_hora"],
     y=leituras.set_index("data_hora")["pessoas"].reindex(ana["data_hora"]).to_numpy(),
-    mode="lines", line=dict(color=AZUL, width=2), fill="tozeroy", fillcolor=MANCHA,
+    mode="lines", line=dict(color=AZUL, width=2.5),  # mesma marca da curva da Tela 1
     connectgaps=False,
     customdata=ana["nivel_m"],
     hovertemplate="%{x|%d/%m %H:%M}<br>Guaíba a %{customdata:.2f} m"
@@ -240,18 +218,20 @@ fig.add_scatter(
 fig.add_scatter(
     x=[pico["data_hora"]], y=[pico["pessoas"]], mode="markers+text",
     marker=dict(color=AZUL_ESCURO, size=10, line=dict(color="white", width=2)),
-    text=[f"Pico: {fmt_int(pico['pessoas'])}"], textposition="middle right",
-    textfont=dict(color=AZUL_ESCURO, size=13), hoverinfo="skip",
+    text=[f"Pico: {fmt_int(pico['pessoas'])}"], textposition="top right",
+    textfont=dict(color=AZUL_ESCURO, size=16), hoverinfo="skip",
 )
 data_mancha = pd.Timestamp("2024-05-06 12:00")
-fig.add_vline(x=data_mancha, line=dict(color=CINZA, dash="dash", width=1.2))
+# layer="below": a linha passa por trás do rótulo do pico, que fica logo ao lado.
+fig.add_vline(x=data_mancha, line=dict(color=CINZA, dash="dash", width=2), layer="below")
 fig.add_annotation(x=data_mancha, y=0, yref="paper", yanchor="bottom", xanchor="left",
                    text=" Mancha de satélite (seção 1)", showarrow=False,
-                   font=dict(color=CINZA_TEXTO, size=11))
+                   font=dict(color=CINZA_TEXTO, size=15))
 fig.update_xaxes(title=None, tickformat="%d/%m", dtick=7 * 24 * 3600 * 1000)
-fig.update_yaxes(title="Pessoas afetadas (est.)", rangemode="tozero", tickformat=",.0f")
-st.plotly_chart(layout_base(fig, altura=280, margin=dict(l=10, r=20, t=10, b=10)),
-                config=CONFIG_PLOTLY)
+fig.update_yaxes(title="Pessoas afetadas (est.)", range=[0, pico["pessoas"] * 1.25],
+                 tickformat=",.0f")
+st.plotly_chart(layout_base(fig, altura=340, margin=dict(l=10, r=20, t=10, b=10)),
+                theme=None, config=CONFIG_PLOTLY)
 st.caption(
     "Nível a cada 15 minutos na estação Usina do Gasômetro (ANA), cruzado com a simulação "
     "do INCT. A série começa em "
