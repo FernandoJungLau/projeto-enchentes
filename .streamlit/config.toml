@@ -1,0 +1,8 @@
+# Azul no lugar do vermelho padrão do Streamlit, que passa ideia de alarme.
+[theme]
+base = "light"
+primaryColor = "#2a78d6"
+
+# Esconde o botão "Deploy" e o menu de desenvolvimento para quem visita.
+[client]
+toolbarMode = "viewer"
