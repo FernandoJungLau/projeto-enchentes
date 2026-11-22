@@ -47,10 +47,10 @@ def inct_por_nivel() -> pd.DataFrame:
 def alagamento_bairros() -> pd.DataFrame:
     """% da área de cada um dos 94 bairros coberta por cada mancha do Zenodo.
 
-    Gerado por scripts/prepara_dashboard.py. A versão de 83 bairros da EDA fica em
-    alagamento_bairros_83.json e não é usada pelo app.
+    Gerado por scripts/prepara_dashboard.py. A versão de 83 bairros do notebook do Zenodo
+    (alagamento_bairros.json) não é usada pelo app.
     """
-    return pd.read_json(PROC / "zenodo" / "alagamento_bairros.json")
+    return pd.read_json(PROC / "zenodo" / "alagamento_bairros_94.json")
 
 
 @st.cache_data

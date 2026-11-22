@@ -6,7 +6,7 @@ Rodar da raiz do repositório, depois dos scripts de coleta e dos notebooks de l
 Saídas:
 - dados/processados/bairros/bairros_poa_94.geojson: os 94 bairros, simplificados
 - dados/processados/bairros/nomes_bairros.json: nome na malha -> nome no INCT
-- dados/processados/zenodo/alagamento_bairros.json: % da área de cada bairro sob cada mancha
+- dados/processados/zenodo/alagamento_bairros_94.json: % da área de cada bairro sob cada mancha
 - dados/processados/zenodo/mancha_obs_20240506_poa.geojson: mancha de 06/05/2024 em Porto Alegre
 - dados/processados/osm/osm_mancha_2024.json: escolas e unidades de saúde com bairro e
   indicação de estar dentro da mancha
@@ -30,7 +30,7 @@ OSM = RAIZ / "dados/processados/osm/osm_escolas_saude_poa.json"
 PROC = RAIZ / "dados/processados"
 SAIDA_BAIRROS = PROC / "bairros/bairros_poa_94.geojson"
 SAIDA_NOMES = PROC / "bairros/nomes_bairros.json"
-SAIDA_ALAGAMENTO = PROC / "zenodo/alagamento_bairros.json"
+SAIDA_ALAGAMENTO = PROC / "zenodo/alagamento_bairros_94.json"
 SAIDA_MANCHA = PROC / "zenodo/mancha_obs_20240506_poa.geojson"
 SAIDA_OSM = PROC / "osm/osm_mancha_2024.json"
 

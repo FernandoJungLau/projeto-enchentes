@@ -1,0 +1,6 @@
+# Dependências do dashboard. O Streamlit Community Cloud lê este arquivo por estar na
+# mesma pasta do app.py; para os scripts e notebooks, usar o requirements.txt da raiz.
+numpy==2.5.4
+pandas==3.1.1
+plotly==7.1.0
+streamlit==1.67.0

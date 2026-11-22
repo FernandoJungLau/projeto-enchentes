@@ -30,7 +30,7 @@ faixa_foto(
     "https://commons.wikimedia.org/wiki/File:IBPA_133621_-_Porto_Alegre,_RS._"
     "Fechamento_das_comportas_do_Cais_Mau%C3%A1._-_2024-05-02_-_Luciano_Lanes-PMPA.jpg",
 )
-st.title("Se o Guaíba subir")
+st.title("Simulação do INCT")
 st.caption("Simulação do INCT SiMAI para níveis de 3,0 a 10,0 m. Projeto de extensão da "
            "disciplina Coleta, Preparação e Análise de Dados, PUCRS, novembro de 2026.")
 st.markdown("**Os números desta página são estimativas de um modelo**, não previsão nem "
