@@ -1,0 +1,17 @@
+{
+  "arquivos": {
+    "Bairros_LC12112_16.zip": {
+      "url": "https://licenciamento-api.procempa.com.br/api/urbanismodrive/geopmpa/SPM/PUBLICO/PDDUA_ATUAL/SHP/Bairros_LC12112_16.zip",
+      "tamanho_bytes": 3464865,
+      "data_coleta": "2026-11-21T11:56:41"
+    },
+    "bairro_vig_metadados.zip": {
+      "url": "https://licenciamento-api.procempa.com.br/api/urbanismodrive/geopmpa/SPM/PUBLICO/PDDUA_ATUAL/SHP/bairro_vig_metadados.zip",
+      "tamanho_bytes": 51468,
+      "data_coleta": "2026-11-21T11:56:46"
+    }
+  },
+  "fonte": "Prefeitura de Porto Alegre (SMAMUS) - Bairros (LC 12.112/16)",
+  "url": "https://prefeitura.poa.br/carta-de-servicos/mapas-digitais-da-smamus",
+  "licenca": "Dados públicos da Prefeitura de Porto Alegre, uso com citação da fonte"
+}

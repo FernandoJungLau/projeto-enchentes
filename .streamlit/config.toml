@@ -1,0 +1,14 @@
+# Azul no lugar do vermelho padrão do Streamlit, que passa ideia de alarme.
+[theme]
+base = "light"
+primaryColor = "#2a78d6"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f6f6f4"
+# Tinta quente, a mesma família de cinzas dos gráficos (estilo.py).
+textColor = "#1f1e1c"
+# Texto maior para leitura em projetor (padrão: 16 px).
+baseFontSize = 18
+
+# Esconde o botão "Deploy" e o menu de desenvolvimento para quem visita.
+[client]
+toolbarMode = "viewer"
