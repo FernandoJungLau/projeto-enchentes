@@ -183,15 +183,25 @@ st.plotly_chart(layout_base(fig, altura=max(240, 26 * len(barras) + 60), bargap=
 st.divider()
 st.subheader("Limitações")
 n_recalc = fmt_int(df["tratamento"].str.contains("recalculado").sum())
-st.markdown(
-    "Estes números saem de um modelo, não de contagem em campo nem de dados da Defesa "
-    "Civil. O INCT SiMAI estima quantos prédios de cada bairro a água alcança em cada "
-    "nível. A população afetada supõe que os moradores se dividem igualmente entre todos "
-    "os prédios do bairro (Censo IBGE 2022), inclusive lojas e prédios públicos. A "
-    "contagem de prédios vem do OpenStreetMap e pode estar incompleta.\n\n"
-    "No arquivo original encontramos zeros e picos isolados e percentuais arredondados "
-    "para cima. Corrigimos esses valores antes de montar o painel."
-)
+# Um cartão por limitação: ícone e título curto para quem passa os olhos, uma frase
+# de explicação embaixo. height="stretch" deixa os quatro com a mesma altura.
+LIMITACOES = [
+    ("calculate", "Modelo, não contagem",
+     "O INCT SiMAI estima quantos prédios de cada bairro a água alcança em cada nível. "
+     "Não é contagem em campo nem dado da Defesa Civil."),
+    ("groups", "Moradores por prédio",
+     "A população do bairro (Censo IBGE 2022) é dividida igualmente entre todos os "
+     "prédios, inclusive lojas e prédios públicos."),
+    ("map", "Mapa colaborativo",
+     "A contagem de prédios vem do OpenStreetMap, um mapa colaborativo, e pode estar "
+     "incompleta."),
+    ("build", "Arquivo corrigido",
+     "O arquivo original tinha zeros e picos isolados e percentuais arredondados para "
+     "cima. Corrigimos esses valores antes de montar o painel."),
+]
+for coluna, (icone, titulo, texto) in zip(st.columns(len(LIMITACOES)), LIMITACOES):
+    with coluna.container(border=True, height="stretch"):
+        st.markdown(f":primary[:material/{icone}:] **{titulo}**\n\n{texto}")
 with st.expander("O que corrigimos no arquivo do INCT"):
     trat = df[df["tratamento"].str.contains("interpolado")].sort_values(["bairro", "nivel_m"])
     motivo = trat["tratamento"].str.extract(r"interpolado \(([^)]+)\)")[0].map(CORRECOES)
